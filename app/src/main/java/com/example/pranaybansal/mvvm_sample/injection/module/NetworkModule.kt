@@ -17,7 +17,7 @@ class NetworkModule {
 
     @Provides
     fun getRetrofit(okHttpClient: OkHttpClient):Retrofit{
-        return Retrofit.Builder().baseUrl("https://api.myjson.com/bins/bs67u/")
+        return Retrofit.Builder().baseUrl("http://api.github.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)

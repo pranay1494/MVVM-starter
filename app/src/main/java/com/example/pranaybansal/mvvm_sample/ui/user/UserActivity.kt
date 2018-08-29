@@ -4,7 +4,10 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
+import android.nfc.Tag
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import com.example.pranaybansal.mvvm_sample.R
 import com.example.pranaybansal.mvvm_sample.ViewModelProviderFactory
 import com.example.pranaybansal.mvvm_sample.data.remote.ApiService
@@ -17,12 +20,13 @@ import javax.inject.Named
 
 class UserActivity : BaseActivity() {
 
+    val TAG = this.javaClass.simpleName
+
     lateinit var mViewModel : UserViewModel
 
     @field:Named("asd")
     @Inject
     lateinit var name : String
-
 
     @Inject
     lateinit var api : ApiService;
@@ -41,14 +45,22 @@ class UserActivity : BaseActivity() {
 
         mViewModel = ViewModelProviders.of(this,viewModelFactory).get(UserViewModel::class.java)
 
+        mViewModel.getWelcomeMsg()
+
         btnSubmit.setOnClickListener {
-             showToast(name)
-            mViewModel.getWelcomeMsg()
+            //showLoading("Loading...")
+            mViewModel.getUserData(etName.text.toString())
         }
 
         mViewModel.welcomeMsg.observe(this, Observer {
             it?.let {
                 showToast(it)
+            }
+        })
+
+        mViewModel.fetchUserData.observe(this, Observer {
+            it?.let {
+               Log.d(TAG,it.name)
             }
         })
     }
