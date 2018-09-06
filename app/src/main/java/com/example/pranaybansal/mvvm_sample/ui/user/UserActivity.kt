@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.example.pranaybansal.mvvm_sample.R
 import com.example.pranaybansal.mvvm_sample.ViewModelProviderFactory
 import com.example.pranaybansal.mvvm_sample.data.remote.ApiService
+import com.example.pranaybansal.mvvm_sample.data.remote.model.User
 import com.example.pranaybansal.mvvm_sample.databinding.ActivityMainBinding
 import com.example.pranaybansal.mvvm_sample.injection.DatabaseInfo
 import com.example.pranaybansal.mvvm_sample.ui.base.BaseActivity
@@ -20,13 +21,11 @@ import javax.inject.Named
 
 class UserActivity : BaseActivity() {
 
-    val TAG = this.javaClass.simpleName
-
     lateinit var mViewModel : UserViewModel
 
-    @field:Named("asd")
+    @field:Named("TAG")
     @Inject
-    lateinit var name : String
+    lateinit var TAG : String
 
     @Inject
     lateinit var api : ApiService;
@@ -48,8 +47,15 @@ class UserActivity : BaseActivity() {
         mViewModel.getWelcomeMsg()
 
         btnSubmit.setOnClickListener {
-            //showLoading("Loading...")
-            mViewModel.getUserData(etName.text.toString())
+            showLoading(this,"Loading...")
+            mViewModel.getUserData(etName.text.toString()).observe(this, Observer {
+                it?.let {
+                    val user = it
+                    Log.d(TAG,user.toString())
+                    hideLoading()
+                    Toast.makeText(this,"recieved"+user,Toast.LENGTH_SHORT).show()
+                }
+            })
         }
 
         mViewModel.welcomeMsg.observe(this, Observer {
@@ -58,10 +64,5 @@ class UserActivity : BaseActivity() {
             }
         })
 
-        mViewModel.fetchUserData.observe(this, Observer {
-            it?.let {
-               Log.d(TAG,it.name)
-            }
-        })
     }
 }

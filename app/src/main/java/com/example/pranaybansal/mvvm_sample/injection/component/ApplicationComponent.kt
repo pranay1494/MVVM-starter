@@ -1,5 +1,6 @@
 package com.example.pranaybansal.mvvm_sample.injection.component
 
+import android.app.Application
 import com.example.pranaybansal.mvvm_sample.MyApplication
 import com.example.pranaybansal.mvvm_sample.data.remote.ApiService
 import com.example.pranaybansal.mvvm_sample.injection.module.AppModule
@@ -14,5 +15,7 @@ import javax.inject.Singleton
 interface ApplicationComponent {
     fun inject(application: MyApplication)
 
-    fun provideApi() : ApiService;
+    fun provideApi() : ApiService
+
+    fun provideApplication() : Application
 }

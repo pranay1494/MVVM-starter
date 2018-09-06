@@ -3,19 +3,17 @@ package com.example.pranaybansal.mvvm_sample.ui.base
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import com.example.pranaybansal.mvvm_sample.MyApplication
 import com.example.pranaybansal.mvvm_sample.utils.NetworkUtils
-import io.reactivex.disposables.CompositeDisposable
 
-open class BaseViewModel : ViewModel() {
+open class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val mCompositeDisposable = CompositeDisposable()
     private val hideProgressDialog = MutableLiveData<Unit>()
     private val showErrorToast = MutableLiveData<String>()
 
-//     fun isNetworkConnected(): Boolean {
-//        return NetworkUtils.isNetworkConnected(getApplication())
-//    }
+     fun isNetworkConnected(): Boolean {
+        return NetworkUtils.isNetworkConnected(getApplication<MyApplication>())
+    }
 
     fun hideLoading(){
         hideProgressDialog.postValue(Unit)
@@ -26,7 +24,7 @@ open class BaseViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        mCompositeDisposable.dispose()
+//        mCompositeDisposable.dispose()
     }
 
 }

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 
 
-class User {
+class User :BaseResponse<User>() {
     @SerializedName("login")
     @Expose
     var login: String? = null

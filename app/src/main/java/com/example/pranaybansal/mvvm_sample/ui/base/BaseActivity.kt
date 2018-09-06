@@ -36,8 +36,8 @@ open class BaseActivity : AppCompatActivity(),BaseView {
 
     fun getActivityComponent() : ActivityComponent{ return mActivityComponent}
 
-    override fun showLoading(message: String) {
-        DialogUtils.displayProgressDialog(applicationContext,message)
+    override fun showLoading(context: Context,message: String) {
+        DialogUtils.displayProgressDialog(context,message)
     }
 
     override fun hideLoading() {

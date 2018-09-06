@@ -1,9 +1,10 @@
 package com.example.pranaybansal.mvvm_sample.ui.base
 
+import android.content.Context
 import android.support.annotation.StringRes
 
 interface BaseView {
-    fun showLoading(message: String)
+    fun showLoading(context: Context,message: String)
 
     fun hideLoading()
 

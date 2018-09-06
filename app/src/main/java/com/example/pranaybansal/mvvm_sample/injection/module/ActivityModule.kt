@@ -26,12 +26,15 @@ class ActivityModule(activity:Activity) {
     }
 
 
-    @Named("asd")
+    @Named("TAG")
     @Provides
-    fun provideName(): String {
-        return "Pranay"
+    fun provideName(@ActivityContext context: Context): String {
+        return context.javaClass.simpleName
     }
 
-
+    @Provides
+    fun getCompositeDisposable(): CompositeDisposable {
+        return CompositeDisposable()
+    }
 
 }
