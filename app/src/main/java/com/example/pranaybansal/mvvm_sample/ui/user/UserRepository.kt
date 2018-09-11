@@ -24,8 +24,7 @@ class UserRepository @Inject constructor(val apiService: ApiService, val composi
         compositeDisposable.add(apiService.fetchUserInfo(username = name).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     response.value = it
-                }, {
-                }))
+                },Throwable::printStackTrace))
 
         return response
     }

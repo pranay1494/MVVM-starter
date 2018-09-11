@@ -17,19 +17,26 @@ import javax.inject.Inject
 
 class UserViewModel @Inject constructor(val dataManager: DataManager,val repository: UserRepository, application: Application) : BaseViewModel(application) {
 
-    val welcomeMsg = MutableLiveData<String>()
+    private val welcomeMsg = MutableLiveData<String>()
+    private val userdata = MutableLiveData<String>()
 
 
-    fun getWelcomeMsg(): LiveData<String> {
-        dataManager.setWelcomeMessage("Welcome Pranay")
-        val msg = dataManager.getWelcomeMessage()
-        welcomeMsg.postValue(msg)
+    fun getWelcomeMsg() : LiveData<String>{
         return welcomeMsg
     }
 
-    fun getUserData(name: String): LiveData<User> {
-        val userdata = repository.fetchUserData(name = name)
+    fun getUserData() : LiveData<String>{
         return userdata
+    }
+
+    fun setWelcomeMsg() {
+        dataManager.setWelcomeMessage("Welcome Pranay")
+        val msg = dataManager.getWelcomeMessage()
+        welcomeMsg.postValue(msg)
+    }
+
+    fun getUserDataFromRepo(name: String) {
+        repository.fetchUserData(name = name)
     }
 
 }

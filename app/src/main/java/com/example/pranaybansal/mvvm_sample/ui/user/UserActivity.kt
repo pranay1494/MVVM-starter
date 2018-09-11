@@ -44,25 +44,31 @@ class UserActivity : BaseActivity() {
 
         mViewModel = ViewModelProviders.of(this,viewModelFactory).get(UserViewModel::class.java)
 
-        mViewModel.getWelcomeMsg()
+        mViewModel.setWelcomeMsg()
+        mViewModel.getUserDataFromRepo(etName.text.toString())
 
         btnSubmit.setOnClickListener {
             showLoading(this,"Loading...")
-            mViewModel.getUserData(etName.text.toString()).observe(this, Observer {
-                it?.let {
-                    val user = it
-                    Log.d(TAG,user.toString())
-                    hideLoading()
-                    Toast.makeText(this,"recieved"+user,Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
 
-        mViewModel.welcomeMsg.observe(this, Observer {
+        }
+        observeData()
+
+    }
+
+    private fun observeData() {
+        mViewModel.getWelcomeMsg().observe(this, Observer {
             it?.let {
                 showToast(it)
             }
         })
 
+        mViewModel.getUserData().observe(this, Observer {
+            it?.let {
+                val user = it
+                Log.d(TAG, user.toString())
+                hideLoading()
+                Toast.makeText(this, "recieved" + user, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
