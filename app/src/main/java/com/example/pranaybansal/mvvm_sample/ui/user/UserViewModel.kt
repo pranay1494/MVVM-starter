@@ -21,8 +21,12 @@ class UserViewModel @Inject constructor(val dataManager: DataManager,val reposit
         userdata = Transformations.switchMap(userdataChanged,{ name -> repository.fetchUserData(name)})
     }
 
-    fun getWelcomeMsg() : LiveData<String>{
+    fun getMsg(): MutableLiveData<String> {
         return welcomeMsg
+    }
+
+    fun getWelcomeMsg() {
+        welcomeMsg.value = repository.getWelcomeMsg()
     }
 
     fun getUserData() : LiveData<User>{
@@ -30,15 +34,12 @@ class UserViewModel @Inject constructor(val dataManager: DataManager,val reposit
     }
 
     fun setWelcomeMsg() {
-        dataManager.setWelcomeMessage("Welcome Pranay")
-        val msg = dataManager.getWelcomeMessage()
-        welcomeMsg.postValue(msg)
+        repository.setWelcomeMsg("Welcome Pranay")
+        getWelcomeMsg()
     }
 
     fun getUserDataFromRepo(name: String) {
         userdataChanged.value = name
-        //repository.fetchUserData(name)
-        Log.d("composite_disposable",compositeDisposable.toString())
     }
 
 }

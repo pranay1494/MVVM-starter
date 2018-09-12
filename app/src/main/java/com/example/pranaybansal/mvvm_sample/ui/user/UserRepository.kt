@@ -19,7 +19,7 @@ class UserRepository @Inject constructor(val apiService: ApiService, val composi
     var response = MutableLiveData<User>()
 
     fun getWelcomeMsg(): String {
-        return "Welcome"
+        return dataManager.getWelcomeMessage()?:""
     }
 
     fun fetchUserData(name: String): MutableLiveData<User> {
@@ -31,5 +31,9 @@ class UserRepository @Inject constructor(val apiService: ApiService, val composi
                 }, Throwable::printStackTrace))
 
         return response
+    }
+
+    fun setWelcomeMsg(msg: String) {
+        dataManager.setWelcomeMessage("Welcome Pranay")
     }
 }

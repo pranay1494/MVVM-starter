@@ -55,7 +55,7 @@ class UserActivity : BaseActivity() {
     }
 
     private fun observeData() {
-        mViewModel.getWelcomeMsg().observe(this, Observer {
+        mViewModel.getMsg().observe(this, Observer {
             it?.let {
                 showToast(it)
             }
