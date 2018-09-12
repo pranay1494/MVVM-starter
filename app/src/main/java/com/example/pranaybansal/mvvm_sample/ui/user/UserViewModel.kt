@@ -3,29 +3,29 @@ package com.example.pranaybansal.mvvm_sample.ui.user
 import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
-import android.content.Context
-import android.text.TextUtils
+import android.arch.lifecycle.Transformations
 import android.util.Log
-import com.example.pranay.fabhotelsassignment.injection.ApplicationContext
 import com.example.pranaybansal.mvvm_sample.data.DataManager
-import com.example.pranaybansal.mvvm_sample.data.remote.model.BaseResponse
 import com.example.pranaybansal.mvvm_sample.data.remote.model.User
-import com.example.pranaybansal.mvvm_sample.injection.ActivityContext
 import com.example.pranaybansal.mvvm_sample.ui.base.BaseViewModel
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class UserViewModel @Inject constructor(val dataManager: DataManager,val repository: UserRepository, application: Application) : BaseViewModel(application) {
+class UserViewModel @Inject constructor(val dataManager: DataManager,val repository: UserRepository, application: Application, compositeDisposable: CompositeDisposable) : BaseViewModel(application,compositeDisposable) {
 
     private val welcomeMsg = MutableLiveData<String>()
-    private val userdata = MutableLiveData<String>()
+    private var userdata :LiveData<User>
+    private var userdataChanged = MutableLiveData<String>()
 
+    init {
+        userdata = Transformations.switchMap(userdataChanged,{ name -> repository.fetchUserData(name)})
+    }
 
     fun getWelcomeMsg() : LiveData<String>{
         return welcomeMsg
     }
 
-    fun getUserData() : LiveData<String>{
+    fun getUserData() : LiveData<User>{
         return userdata
     }
 
@@ -36,7 +36,9 @@ class UserViewModel @Inject constructor(val dataManager: DataManager,val reposit
     }
 
     fun getUserDataFromRepo(name: String) {
-        repository.fetchUserData(name = name)
+        userdataChanged.value = name
+        //repository.fetchUserData(name)
+        Log.d("composite_disposable",compositeDisposable.toString())
     }
 
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import com.bumptech.glide.Glide
 import com.example.pranaybansal.mvvm_sample.injection.ActivityContext
 import com.example.pranaybansal.mvvm_sample.injection.DatabaseInfo
+import com.example.pranaybansal.mvvm_sample.injection.PerActivity
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
@@ -33,6 +34,7 @@ class ActivityModule(activity:Activity) {
     }
 
     @Provides
+    @PerActivity
     fun getCompositeDisposable(): CompositeDisposable {
         return CompositeDisposable()
     }

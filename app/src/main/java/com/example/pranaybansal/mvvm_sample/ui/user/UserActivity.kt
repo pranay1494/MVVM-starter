@@ -45,11 +45,10 @@ class UserActivity : BaseActivity() {
         mViewModel = ViewModelProviders.of(this,viewModelFactory).get(UserViewModel::class.java)
 
         mViewModel.setWelcomeMsg()
-        mViewModel.getUserDataFromRepo(etName.text.toString())
 
         btnSubmit.setOnClickListener {
             showLoading(this,"Loading...")
-
+            mViewModel.getUserDataFromRepo(etName.text.toString())
         }
         observeData()
 
