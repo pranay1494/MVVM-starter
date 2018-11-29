@@ -1,0 +1,79 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+    # api_token: ENV["271675b748ccfa2affbfd029ab6f632db2072bd9"],
+    # owner_name: ENV["pranay1494-gmail.com"],
+
+platform :android do
+
+before_all do
+    ENV["APPCENTER_API_TOKEN"] = "271675b748ccfa2affbfd029ab6f632db2072bd9"
+    ENV["APPCENTER_OWNER_NAME"] = "pranay1494-gmail.com"
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    ensure_git_status_clean
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "generates Debug Apk"
+  lane :generateDebugApk do |options|
+    increment_version_code
+    current_version_name = android_get_version_name 
+    gradle(
+      properties: {
+    'versionName' => if options[:versionName].nil? || options[:versionName].empty?
+      current_version_name
+    else
+      options[:versionName]
+    end
+  },
+      task: "clean assemble",
+      build_type: 'release',
+      flavor: 'prod'
+      )
+    dropbox(
+    file_path: './app/build/outputs/apk/prod/release/app-prod-release-unsigned.apk',
+    app_key: '8nnpf72yosc0fox',
+    app_secret: 'zs3cngy1d2ytx4r',
+    dropbox_path: '/path/to/Dropbox/destination/folder',
+)
+
+    appcenter_upload(
+    api_token: ENV["APPCENTER_API_TOKEN"],
+    owner_name: ENV["APPCENTER_OWNER_NAME"],
+    app_name: "Dummy-release",
+    apk: "./app/build/outputs/apk/prod/release/app-prod-release-unsigned.apk"
+)
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+end

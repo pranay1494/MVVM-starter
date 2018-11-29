@@ -7,16 +7,29 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.pranaybansal.mvvm_sample"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 44
+        versionName project.hasProperty('versionName') ? project.property('versionName') : ""
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+
+        }
+    }
+
+    flavorDimensions "default"
+    productFlavors{
+        dev{
+            dimension "default"
+        }
+        prod{
+            dimension "default"
         }
     }
     dataBinding{
@@ -72,5 +85,8 @@ dependencies {
 
 
     compile "com.google.android.gms:play-services-location:$parent.ext.playServicesVersion"
+    def appCenterSdkVersion = '1.10.0'
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 }
 apply plugin: 'com.google.gms.google-services'
