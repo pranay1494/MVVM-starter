@@ -9,7 +9,7 @@ android {
         applicationId "com.example.pranaybansal.mvvm_sample"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 44
+        versionCode 54
         versionName project.hasProperty('versionName') ? project.property('versionName') : ""
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
