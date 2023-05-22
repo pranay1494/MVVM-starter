@@ -21,8 +21,8 @@ default_platform(:android)
 platform :android do
 
 before_all do
-    ENV["APPCENTER_API_TOKEN"] = "271675b748ccfa2affbfd029ab6f632db2072bd9"
-    ENV["APPCENTER_OWNER_NAME"] = "pranay1494-gmail.com"
+    ENV["APPCENTER_API_TOKEN"] = "XXXX"
+    ENV["APPCENTER_OWNER_NAME"] = "XXX-gmail.com"
   end
 
   desc "Runs all the tests"
